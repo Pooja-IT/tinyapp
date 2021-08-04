@@ -44,7 +44,17 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[shortURL];
   res.redirect(`/urls`);
 });
-
+app.post("/urls/:id", (req, res) => {
+  const shortURL = req.params.id; 
+  urlDatabase[shortURL] = req.body.newURL;
+  console.log(shortURL);
+  const templateVars = {
+    shortURL: shortURL,
+    longURL: urlDatabase[shortURL]
+  };
+  console.log("abc",templateVars);
+  res.render('urls_show', templateVars);
+});
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
