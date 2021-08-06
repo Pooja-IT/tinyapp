@@ -7,6 +7,8 @@ const bodyParser = require("body-parser"); //to make this data readable
 app.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
+const bcrypt = require('bcryptjs');
+
 
 // add new user object to the global object
 const users = { 
@@ -76,8 +78,9 @@ app.post('/login', (req, res) => {
   const email  = req.body.email;
   const password  = req.body.password;
   const user = findUserWithEmailInDatabase(email,users);
+  const hashedPassword = user.password;
   if (!(user == undefined)) {
-    if (password === user.password) {
+    if (bcrypt.compareSync(password, hashedPassword)) {
       res.cookie('user_id', user.id);
       console.log(user.id);
       res.redirect('/urls');
@@ -111,6 +114,7 @@ app.post('/register', (req, res) => {
   const user_id = getRandomString(5);
   const email  = req.body.email;
   const password  = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password,10);
   const user = findUserWithEmailInDatabase(email,users);
   if(user) {
     res.status(400).send("user is already exist. Go to Log in page");
@@ -118,8 +122,10 @@ app.post('/register', (req, res) => {
   if (!email || !password || emailExists(email,users)) {
     res.status(400).send('<h2>Sorry, your email or password is invalid.</h2>');
     return users;
-  } 
-  addNewUser(users, email, password);
+  } else {
+
+  }
+  addNewUser(users, email, hashedPassword);
   console.log(users);
   res.cookie('user_id', user_id);
   res.redirect("/urls");
