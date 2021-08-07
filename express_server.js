@@ -63,7 +63,7 @@ app.get("/urls", (req, res) => {
   } else {
     const templateVars = {
       urls: urlsForUserDB,
-      user: users[userID],
+      user: req.session["user_id"],
     }
     return res.render("urls_index", templateVars);
   }
