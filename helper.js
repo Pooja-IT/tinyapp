@@ -1,3 +1,4 @@
+//create a random string 
 const getRandomString = (numOfChars) => {
   let randomCharsStr = '';
   const possibleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -7,7 +8,7 @@ const getRandomString = (numOfChars) => {
   return randomCharsStr;
 };
 
-const findUserWithEmailInDatabase = (email, users) => {
+const getUserByEmail = (email, users) => {
   for (const user in users) {
     if (users[user].email === email) {
       return users[user];
@@ -15,6 +16,8 @@ const findUserWithEmailInDatabase = (email, users) => {
   }
   return undefined;
 };
+
+//function to look up if email already exist
 const emailExists = (emailAddress,users) => {
   for (const key in users) {
     console.log(key);
@@ -23,6 +26,7 @@ const emailExists = (emailAddress,users) => {
     }
   }
 };
+
 const getUserById = (id,users) => {
   const user = users[id];
   console.log("...", user);
@@ -42,6 +46,7 @@ const urlsForUser = (id, urlDatabase) => {
   }
   return userURLdata;
 };
+
 const addNewUser = (db, email, password) => {
   const userId = getRandomString(5);
   const newUser = {
@@ -52,4 +57,5 @@ const addNewUser = (db, email, password) => {
   db[userId] = newUser;
   return userId;
 };
-module.exports = {getRandomString, findUserWithEmailInDatabase, emailExists, getUserById, urlsForUser, addNewUser};
+
+module.exports = {getRandomString, emailExists, getUserById, urlsForUser, addNewUser, getUserByEmail};
